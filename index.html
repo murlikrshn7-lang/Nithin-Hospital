@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nithin Hospital | Amazon-Style Healthcare Portal</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                amazon_blue: '#131921',
+                amazon_light: '#232f3e',
+                amazon_yellow: '#febd69',
+                amazon_orange: '#f08804',
+                amazon_amber: '#f3a847',
+                amazon_bg: '#eaeded',
+                amazon_link: '#007185',
+                amazon_green: '#007600'
+              }
+            }
+          }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { background-color: #eaeded; font-family: Arial, sans-serif; }
+        .amazon-btn-primary {
+            background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
+            border-color: #a88734 #9c7e31 #846a29;
+        }
+        .amazon-btn-primary:hover {
+            background: linear-gradient(to bottom, #f5d78e, #eeb933);
+        }
+        .amazon-btn-secondary {
+            background: linear-gradient(to bottom, #f6d496, #e47911);
+            border-color: #b05d0e #a0540d #84450b;
+        }
+        .amazon-btn-secondary:hover {
+            background: linear-gradient(to bottom, #f4c87a, #d06d0e);
+        }
+        .amazon-card {
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="text-slate-900 min-h-screen flex flex-col justify-between">
+
+    <!-- Amazon Top Navigation Header -->
+    <header class="bg-amazon_blue text-white text-sm sticky top-0 z-50">
+        <!-- Main Nav Bar -->
+        <div class="container mx-auto px-4 py-2 flex items-center justify-between gap-4 flex-wrap">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center space-x-2 border border-transparent hover:border-white p-1 rounded">
+                <div class="text-2xl font-black tracking-tight text-white flex items-center">
+                    nithin<span class="text-amazon_orange">hospital</span><span class="text-xs text-amazon_amber font-normal ml-1">.in</span>
+                </div>
+            </a>
+
+            <!-- Location Badge -->
+            <div class="hidden md:flex items-center space-x-1 border border-transparent hover:border-white p-1 rounded cursor-pointer">
+                <i class="fa-solid fa-location-dot text-amazon_orange text-base"></i>
+                <div class="text-xs leading-tight">
+                    <span class="text-gray-400 block">Delivering Health to</span>
+                    <span class="font-bold block text-white">Keesara 501303</span>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="flex-1 max-w-2xl flex items-center">
+                <select class="bg-gray-200 text-slate-800 text-xs p-2.5 rounded-l border-r border-gray-300 focus:outline-none hidden sm:block">
+                    <option>All Doctors & Services</option>
+                    <option>Gynecology</option>
+                    <option>General Medicine</option>
+                    <option>Emergency Services</option>
+                    <option>Diagnostic Lab</option>
+                </select>
+                <input type="text" id="searchInput" onkeyup="filterServices()" placeholder="Search doctors, specialties, treatments (e.g., BP, PCOS, Delivery)..." class="w-full px-3 py-2 text-slate-900 text-sm focus:outline-none rounded-l sm:rounded-l-none">
+                <button class="bg-amazon_amber hover:bg-amazon_orange text-slate-900 px-5 py-2 rounded-r font-bold transition">
+                    <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Language / Region -->
+            <div class="hidden lg:flex items-center border border-transparent hover:border-white p-1.5 rounded cursor-pointer text-xs font-bold">
+                <span class="mr-1">🇮🇳</span> EN
+            </div>
+
+            <!-- Emergency Line Badge -->
+            <a href="tel:07816099425" class="border border-transparent hover:border-white p-1 rounded leading-tight">
+                <span class="text-xs text-gray-300 block">24/7 Emergency</span>
+                <span class="font-bold text-amazon_yellow text-xs md:text-sm">078160 99425</span>
+            </a>
+
+            <!-- Appointment Slot Cart -->
+            <a href="#appointment" class="flex items-center border border-transparent hover:border-white p-1.5 rounded relative">
+                <div class="relative">
+                    <i class="fa-solid fa-calendar-check text-2xl text-white"></i>
+                    <span id="cartCount" class="absolute -top-1 -right-2 bg-amazon_orange text-slate-900 font-extrabold text-xs w-5 h-5 rounded-full flex items-center justify-center">1</span>
+                </div>
+                <span class="font-bold text-xs ml-2 hidden sm:inline">Bookings</span>
+            </a>
+        </div>
+
+        <!-- Sub Navigation Bar -->
+        <div class="bg-amazon_light px-4 py-1.5 text-xs flex items-center space-x-6 overflow-x-auto whitespace-nowrap border-t border-slate-700 text-gray-200">
+            <a href="#doctors" class="hover:text-amazon_yellow flex items-center font-bold"><i class="fa-solid fa-bars mr-1.5"></i> All Departments</a>
+            <a href="#doctors" class="hover:text-amazon_yellow">Top Doctors</a>
+            <a href="#services" class="hover:text-amazon_yellow">Hospital Facilities</a>
+            <a href="#reviews" class="hover:text-amazon_yellow">Customer Reviews</a>
+            <a href="#appointment" class="hover:text-amazon_yellow">Instant Consultations</a>
+            <a href="#contact" class="hover:text-amazon_yellow">Contact Us</a>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="container mx-auto px-4 py-4 flex-1">
+
+        <!-- Amazon Banner Carousel Simulation -->
+        <div class="relative bg-gradient-to-r from-slate-800 to-amazon_light text-white rounded shadow-md overflow-hidden mb-6 p-6 md:p-10 border border-slate-300">
+            <div class="max-w-2xl relative z-10">
+                <span class="bg-amazon_orange text-slate-900 font-bold text-xs uppercase px-2.5 py-1 rounded">#1 Rated Healthcare in Keesara</span>
+                <h1 class="text-2xl md:text-4xl font-extrabold mt-3 mb-2 text-white">Nithin Multispeciality Hospital</h1>
+                <p class="text-sm md:text-base text-gray-200 mb-4">Quality healthcare delivery with experienced general physicians and gynecologists. Open 24/7 for emergency admissions.</p>
+                <div class="flex flex-wrap gap-3">
+                    <a href="#appointment" class="amazon-btn-primary text-slate-900 font-bold text-xs md:text-sm px-6 py-2.5 rounded shadow border flex items-center">
+                        <i class="fa-solid fa-calendar-plus mr-2"></i> Book Appointment Now
+                    </a>
+                    <a href="tel:07816099425" class="bg-white text-slate-900 hover:bg-gray-100 font-bold text-xs md:text-sm px-6 py-2.5 rounded shadow border flex items-center">
+                        <i class="fa-solid fa-phone text-amazon_orange mr-2"></i> Call Helpline
+                    </a>
+                </div>
+            </div>
+            <i class="fa-solid fa-user-doctor absolute -right-6 -bottom-10 text-9xl text-white/10 hidden md:block"></i>
+        </div>
+
+        <!-- Product Cards Grid (Amazon Category Layout) -->
+        <div id="doctors" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            
+            <!-- Category Card 1: Dr. Vanaja -->
+            <div class="amazon-card p-4 flex flex-col justify-between hover:shadow-lg transition searchable-item" data-keywords="dr p vanaja gynaecologist dgo pcos pregnancy checkup delivery">
+                <div>
+                    <h2 class="font-bold text-lg text-slate-900 mb-1 border-b pb-2">Dr. P. Vanaja</h2>
+                    <span class="text-xs font-bold text-amazon_link">MBBS, DGO — Gynecologist</span>
+                    
+                    <div class="flex items-center my-2 text-amazon_orange text-xs">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star-half-stroke"></i>
+                        <span class="text-slate-600 font-normal ml-1.5">(148 reviews)</span>
+                    </div>
+
+                    <p class="text-xs text-amazon_green font-bold mb-3"><i class="fa-solid fa-circle-check"></i> Available Today (12:30 PM - 2:30 PM)</p>
+                    
+                    <div class="bg-gray-50 p-2.5 rounded border border-gray-200 mb-4">
+                        <p class="text-xs font-bold text-slate-700 mb-1">Key Specialties:</p>
+                        <ul class="text-xs text-slate-600 space-y-1">
+                            <li>• Antenatal & Pregnancy Care</li>
+                            <li>• Normal / C-Section Delivery</li>
+                            <li>• PCOS & Menstrual Disorders</li>
+                            <li>• Family Planning Services</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <a href="#appointment" onclick="selectDoctor('Dr. P Vanaja (Gynecologist)')" class="amazon-btn-primary text-center text-xs font-bold py-2 px-4 rounded shadow border block">
+                    Select Doctor & Schedule
+                </a>
+            </div>
+
+            <!-- Category Card 2: Dr. Sharanya -->
+            <div class="amazon-card p-4 flex flex-col justify-between hover:shadow-lg transition searchable-item" data-keywords="dr g sharanya general physician mbbs md bp sugar diabetes fever asthma">
+                <div>
+                    <h2 class="font-bold text-lg text-slate-900 mb-1 border-b pb-2">Dr. G. Sharanya</h2>
+                    <span class="text-xs font-bold text-amazon_link">MBBS, MD (OSM) — General Physician</span>
+
+                    <div class="flex items-center my-2 text-amazon_orange text-xs">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <span class="text-slate-600 font-normal ml-1.5">(210 reviews)</span>
+                    </div>
+
+                    <p class="text-xs text-amazon_green font-bold mb-3"><i class="fa-solid fa-circle-check"></i> Available Today (11:00 AM - 7:00 PM)</p>
+
+                    <div class="bg-gray-50 p-2.5 rounded border border-gray-200 mb-4">
+                        <p class="text-xs font-bold text-slate-700 mb-1">Key Specialties:</p>
+                        <ul class="text-xs text-slate-600 space-y-1">
+                            <li>• B.P & Diabetes Management</li>
+                            <li>• Fever, UTIs & Infections</li>
+                            <li>• Asthma, Bronchitis & Allergies</li>
+                            <li>• Joint Pain & Thyroid Care</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <a href="#appointment" onclick="selectDoctor('Dr. G Sharanya (General Physician)')" class="amazon-btn-primary text-center text-xs font-bold py-2 px-4 rounded shadow border block">
+                    Select Doctor & Schedule
+                </a>
+            </div>
+
+            <!-- Category Card 3: Emergency & Triage -->
+            <div class="amazon-card p-4 flex flex-col justify-between hover:shadow-lg transition searchable-item" data-keywords="emergency 24/7 casualty trauma triage beds ambulance">
+                <div>
+                    <h2 class="font-bold text-lg text-slate-900 mb-1 border-b pb-2">24/7 Emergency Care</h2>
+                    <span class="text-xs font-bold text-amazon_orange">Round-The-Clock Service</span>
+
+                    <div class="flex items-center my-2 text-amazon_orange text-xs">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <span class="text-slate-600 font-normal ml-1.5">(305 reviews)</span>
+                    </div>
+
+                    <p class="text-xs text-red-600 font-bold mb-3"><i class="fa-solid fa-bolt"></i> Immediate Response Unit</p>
+
+                    <div class="bg-gray-50 p-2.5 rounded border border-gray-200 mb-4">
+                        <p class="text-xs font-bold text-slate-700 mb-1">Emergency Features:</p>
+                        <ul class="text-xs text-slate-600 space-y-1">
+                            <li>• Immediate Triage & Stabilization</li>
+                            <li>• Critical Admission Beds</li>
+                            <li>• Oxygen & Vital Monitoring</li>
+                            <li>• On-call Specialist Support</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <a href="tel:07816099425" class="amazon-btn-secondary text-white text-center text-xs font-bold py-2 px-4 rounded shadow border block">
+                    <i class="fa-solid fa-phone mr-1"></i> Call Emergency Desk
+                </a>
+            </div>
+
+            <!-- Category Card 4: Diagnostics & Pharmacy -->
+            <div class="amazon-card p-4 flex flex-col justify-between hover:shadow-lg transition searchable-item" data-keywords="diagnostic lab blood test pharmacy medicines health checkup">
+                <div>
+                    <h2 class="font-bold text-lg text-slate-900 mb-1 border-b pb-2">Diagnostics & Pharmacy</h2>
+                    <span class="text-xs font-bold text-amazon_link">In-House Facility</span>
+
+                    <div class="flex items-center my-2 text-amazon_orange text-xs">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star-half-stroke"></i>
+                        <span class="text-slate-600 font-normal ml-1.5">(92 reviews)</span>
+                    </div>
+
+                    <p class="text-xs text-amazon_green font-bold mb-3"><i class="fa-solid fa-check"></i> Fast-Track Reports Available</p>
+
+                    <div class="bg-gray-50 p-2.5 rounded border border-gray-200 mb-4">
+                        <p class="text-xs font-bold text-slate-700 mb-1">Facility Highlights:</p>
+                        <ul class="text-xs text-slate-600 space-y-1">
+                            <li>• Complete Blood Picture (CBP)</li>
+                            <li>• Thyroid & Lipid Profile</li>
+                            <li>• Urine & Infection Screening</li>
+                            <li>• Prescription Medicines Stocked</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <a href="#appointment" onclick="selectDoctor('Diagnostic Lab Test')" class="amazon-btn-primary text-center text-xs font-bold py-2 px-4 rounded shadow border block">
+                    Book Diagnostic Test
+                </a>
+            </div>
+
+        </div>
+
+        <!-- Facilities Section -->
+        <section id="services" class="amazon-card p-6 mb-8">
+            <h2 class="text-xl font-bold text-slate-900 mb-4 border-b pb-2">Hospital Infrastructure & Services</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <div class="flex items-start space-x-3">
+                    <div class="text-amazon_orange text-2xl"><i class="fa-solid fa-hospital-user"></i></div>
+                    <div>
+                        <h3 class="font-bold text-sm text-slate-900">Outpatient Department (OPD)</h3>
+                        <p class="text-xs text-slate-600 mt-1">Structured daily consultations with minimal wait times and comprehensive diagnosis.</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <div class="text-amazon_orange text-2xl"><i class="fa-solid fa-bed"></i></div>
+                    <div>
+                        <h3 class="font-bold text-sm text-slate-900">Inpatient Care (IPD)</h3>
+                        <p class="text-xs text-slate-600 mt-1">Clean, well-maintained ward beds with continuous nursing supervision.</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-3">
+                    <div class="text-amazon_orange text-2xl"><i class="fa-solid fa-capsules"></i></div>
+                    <div>
+                        <h3 class="font-bold text-sm text-slate-900">24 Hours Pharmacy</h3>
+                        <p class="text-xs text-slate-600 mt-1">Direct access to prescribed pharmaceuticals directly on-site.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Amazon Checkout Style Appointment Form -->
+        <section id="appointment" class="amazon-card p-6 mb-8 max-w-3xl mx-auto border-t-4 border-t-amazon_orange">
+            <div class="flex items-center justify-between border-b pb-3 mb-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Schedule Consultation Slot</h2>
+                    <p class="text-xs text-slate-500">Fast-track registration • Pay at reception during visit</p>
+                </div>
+                <span class="bg-gray-100 text-slate-700 text-xs font-bold px-3 py-1 rounded border">Step 1 of 1</span>
+            </div>
+
+            <form onsubmit="handleFormSubmit(event)" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Patient Full Name *</label>
+                        <input type="text" required placeholder="Enter full name" class="w-full border border-gray-400 p-2 text-xs rounded focus:border-amazon_orange focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Mobile Phone Number *</label>
+                        <input type="tel" required placeholder="10-digit mobile number" class="w-full border border-gray-400 p-2 text-xs rounded focus:border-amazon_orange focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Select Specialty / Doctor *</label>
+                        <select id="doctorSelect" class="w-full border border-gray-400 p-2 text-xs rounded focus:border-amazon_orange focus:outline-none">
+                            <option value="Dr. G Sharanya (General Physician)">Dr. G Sharanya (General Physician - 11:00 AM to 7:00 PM)</option>
+                            <option value="Dr. P Vanaja (Gynecologist)">Dr. P Vanaja (Gynecologist - 12:30 PM to 2:30 PM)</option>
+                            <option value="Diagnostic Lab Test">Diagnostic Lab Test</option>
+                            <option value="General Emergency Desk">24/7 General Emergency Desk</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Preferred Appointment Date *</label>
+                        <input type="date" required class="w-full border border-gray-400 p-2 text-xs rounded focus:border-amazon_orange focus:outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Health Concern / Remarks (Optional)</label>
+                    <textarea rows="2" placeholder="Describe symptoms briefly..." class="w-full border border-gray-400 p-2 text-xs rounded focus:border-amazon_orange focus:outline-none"></textarea>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" class="w-full amazon-btn-primary font-bold text-slate-900 text-sm py-2.5 rounded shadow border border-yellow-600 hover:brightness-95">
+                        Confirm Appointment Booking
+                    </button>
+                </div>
+            </form>
+            <div id="confirmationMessage" class="hidden mt-4 p-3 bg-green-100 border border-green-400 text-green-800 text-xs rounded font-bold">
+                <i class="fa-solid fa-circle-check mr-1"></i> Appointment Request Submitted! Our reception team will reach out to confirm your slot.
+            </div>
+        </section>
+
+        <!-- Customer Reviews Grid -->
+        <section id="reviews" class="amazon-card p-6 mb-8">
+            <h2 class="text-xl font-bold text-slate-900 mb-4 border-b pb-2">Verified Patient Reviews</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="border border-gray-200 p-3 rounded bg-gray-50">
+                    <div class="flex items-center space-x-2 mb-1">
+                        <div class="w-7 h-7 bg-gray-300 rounded-full flex items-center justify-center font-bold text-xs text-slate-700">R</div>
+                        <span class="text-xs font-bold text-slate-800">Ramesh K.</span>
+                    </div>
+                    <div class="flex items-center text-amazon_orange text-xs mb-1">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        <span class="text-slate-900 font-bold ml-2">Verified Consultation</span>
+                    </div>
+                    <p class="text-xs text-slate-600">"Dr. Sharanya explains diagnosis very clearly. Prompt treatment and polite staff."</p>
+                </div>
+
+                <div class="border border-gray-200 p-3 rounded bg-gray-50">
+                    <div class="flex items-center space-x-2 mb-1">
+                        <div class="w-7 h-7 bg-gray-300 rounded-full flex items-center justify-center font-bold text-xs text-slate-700">S</div>
+                        <span class="text-xs font-bold text-slate-800">Sunitha M.</span>
+                    </div>
+                    <div class="flex items-center text-amazon_orange text-xs mb-1">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        <span class="text-slate-900 font-bold ml-2">Verified Consultation</span>
+                    </div>
+                    <p class="text-xs text-slate-600">"Consulted Dr. Vanaja for antenatal checkups. Very patient doctor and good hospital atmosphere."</p>
+                </div>
+
+                <div class="border border-gray-200 p-3 rounded bg-gray-50">
+                    <div class="flex items-center space-x-2 mb-1">
+                        <div class="w-7 h-7 bg-gray-300 rounded-full flex items-center justify-center font-bold text-xs text-slate-700">V</div>
+                        <span class="text-xs font-bold text-slate-800">Venkatesh P.</span>
+                    </div>
+                    <div class="flex items-center text-amazon_orange text-xs mb-1">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        <span class="text-slate-900 font-bold ml-2">Verified Emergency Visit</span>
+                    </div>
+                    <p class="text-xs text-slate-600">"Great emergency support in Keesara region. Prompt medical attention provided."</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Amazon Footer Layout -->
+    <footer id="contact" class="bg-amazon_light text-white text-xs">
+        <!-- Back to Top Button -->
+        <a href="#" class="block bg-slate-700 hover:bg-slate-600 text-center py-3 text-white font-bold transition">
+            Back to top
+        </a>
+
+        <!-- Footer Links -->
+        <div class="container mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-8 border-b border-slate-700">
+            <div>
+                <h3 class="font-bold text-sm text-white mb-3">Nithin Hospital</h3>
+                <p class="text-gray-300 leading-relaxed">Multispeciality healthcare hospital serving Keesara, Secunderabad, and surrounding Hyderabad localities with round-the-clock emergency medical services.</p>
+            </div>
+
+            <div>
+                <h3 class="font-bold text-sm text-white mb-3">Hospital Location</h3>
+                <p class="text-gray-300 leading-relaxed mb-2">
+                    <i class="fa-solid fa-location-dot text-amazon_orange mr-1"></i> ECIL - Keesara Rd, Keesara, Secunderabad, Telangana 501303
+                </p>
+                <p class="text-gray-300">
+                    <i class="fa-solid fa-user-doctor text-amazon_orange mr-1"></i> <strong>Managing Director:</strong> Dr. G S Raju (MBS OSM)
+                </p>
+            </div>
+
+            <div>
+                <h3 class="font-bold text-sm text-white mb-3">Helpline Contacts</h3>
+                <ul class="space-y-2">
+                    <li class="flex justify-between border-b border-slate-700 pb-1">
+                        <span class="text-gray-300">24/7 Keesara Reception:</span>
+                        <a href="tel:07816099425" class="text-amazon_yellow font-bold">078160 99425</a>
+                    </li>
+                    <li class="flex justify-between border-b border-slate-700 pb-1">
+                        <span class="text-gray-300">Emergency Desk:</span>
+                        <a href="tel:07816099425" class="text-amazon_yellow font-bold">078160 99425</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="bg-amazon_blue py-6 text-center text-gray-400">
+            <p>&copy; 2026 Nithin Hospital. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        function selectDoctor(doctorName) {
+            const doctorSelect = document.getElementById('doctorSelect');
+            if (doctorSelect) {
+                doctorSelect.value = doctorName;
+            }
+        }
+
+        function filterServices() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const items = document.querySelectorAll('.searchable-item');
+
+            items.forEach(item => {
+                const keywords = item.getAttribute('data-keywords').toLowerCase();
+                const text = item.innerText.toLowerCase();
+                if (keywords.includes(query) || text.includes(query)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const confirmation = document.getElementById('confirmationMessage');
+            confirmation.classList.remove('hidden');
+            const cartCount = document.getElementById('cartCount');
+            cartCount.innerText = parseInt(cartCount.innerText) + 1;
+        }
+    </script>
+
+    <!-- Cloudflare Web Analytics -->
+    <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "3a3487c22d104214a1034060eaad2b46"}'></script><!-- End Cloudflare Web Analytics -->
+    <!-- End Cloudflare Web Analytics -->
+     
+</body>
+</html>
